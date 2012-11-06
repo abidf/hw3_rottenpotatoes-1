@@ -252,3 +252,10 @@ end
 Then /^show me the page$/ do
   save_and_open_page
 end
+
+#Given /^Given I check only the following ratings: PG, R$/ do
+#  uncheck('G')
+#  check('PG')
+#  check('R')
+# uncheck('PG-13')
+#end

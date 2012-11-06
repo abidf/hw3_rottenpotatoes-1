@@ -1,3 +1,4 @@
+require 'uri'
 # TL;DR: YOU SHOULD DELETE THIS FILE
 #
 # This file is used by web_steps.rb, which you should also delete
@@ -12,10 +13,18 @@ module NavigationHelpers
   #
   def path_to(page_name)
     case page_name
-
-    when /^the (RottenPotatoes )?home\s?page$/ then '/movies'
-    when /^the movies page$/ then '/movies'
-
+    when /^the RottenPotatoes home page$/
+    	'/movies'
+    when /^the home\s?page$/
+      '/movies'
+    when /^the edit page for "(.*)"$/
+      "/movies/#{Movie.where(:title=>$1).first.id}/edit"
+    when /^the details page for "(.*)"$/
+      "/movies/#{Movie.where(:title=>$1).first.id}"
+    when /^the Similar Movies page for "(.*)"$/
+      URI.escape("/movies/search_by_director/#{Movie.where(:title=>$1).first.director}")
+    when /^Create New Movie page$/
+      '/movies/new'
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

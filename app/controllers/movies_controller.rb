@@ -1,8 +1,21 @@
 class MoviesController < ApplicationController
 
+  def search_by_director
+		if params[:director] == " "
+			session[:notice]="'#{params[:title]}' has no director info."
+			redirect_to movies_path
+		end
+    @movies = Movie.find_by_director(params[:director])
+  end	  
+
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
+		if @movie.director.nil? or @movie.director=="" 
+			@director=" "
+		else
+			@director=@movie.director
+		end
     # will render app/views/movies/show.<extension> by default
   end
 
@@ -27,6 +40,11 @@ class MoviesController < ApplicationController
       redirect_to :sort => sort, :ratings => @selected_ratings and return
     end
     @movies = Movie.find_all_by_rating(@selected_ratings.keys, ordering)
+		if session[:notice]
+			flash.now[:notice]=session[:notice]
+			session.delete :notice
+			render :action => "index"
+		end
   end
 
   def new
